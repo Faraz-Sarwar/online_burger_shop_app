@@ -153,7 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(255, 190, 190, 190),
+                      ),
                     ),
                   ),
                 ),
