@@ -181,137 +181,155 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
-                  height: 290,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = filteredProducts[index];
-                      bool isFavorite = product['isFavorite'] ?? false;
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetailScreen(product: product),
-                            ),
+                  height: filteredProducts.isEmpty ? 80 : 290,
+                  child: filteredProducts.isEmpty
+                      ? Center(
+                          child: const Text(
+                            "No products found!",
+                            style: TextStyle(fontSize: 20),
                           ),
-                          child: Container(
-                            margin: EdgeInsets.only(right: 6),
-                            width: 240,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26.withOpacity(0.1),
-                                  offset: Offset(0.5, 1.1),
-                                  spreadRadius: 1.4,
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: filteredProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = filteredProducts[index];
+                            bool isFavorite = product['isFavorite'] ?? false;
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailScreen(product: product),
+                                  ),
                                 ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              children: [
-                                Align(
-                                  alignment: AlignmentGeometry.topRight,
-                                  child: InkWell(
-                                    onTap: () {
-                                      product['isFavorite']
-                                          ? ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                duration: const Duration(
-                                                  seconds: 2,
-                                                ),
-                                                backgroundColor:
-                                                    Colors.orangeAccent,
-                                                content: const Text(
-                                                  'Removed from favourites',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 6),
+                                  width: 240,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26.withOpacity(0.1),
+                                        offset: Offset(0.5, 1.1),
+                                        spreadRadius: 1.4,
+                                      ),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Align(
+                                        alignment: AlignmentGeometry.topRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            product['isFavorite']
+                                                ? ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      duration: const Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.orangeAccent,
+                                                      content: const Text(
+                                                        'Removed from favourites',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : ScaffoldMessenger.of(
+                                                    context,
+                                                  ).showSnackBar(
+                                                    SnackBar(
+                                                      duration: const Duration(
+                                                        seconds: 2,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.orangeAccent,
+                                                      content: const Text(
+                                                        'Added to favourites',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                            setState(() {
+                                              product['isFavorite'] =
+                                                  !product['isFavorite'];
+                                            });
+                                          },
+                                          child: Container(
+                                            height: 30,
+                                            width: 34,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              color: const Color.fromARGB(
+                                                255,
+                                                255,
+                                                225,
+                                                223,
                                               ),
-                                            )
-                                          : ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                duration: const Duration(
-                                                  seconds: 2,
-                                                ),
-                                                backgroundColor:
-                                                    Colors.orangeAccent,
-                                                content: const Text(
-                                                  'Added to favourites',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                      setState(() {
-                                        product['isFavorite'] =
-                                            !product['isFavorite'];
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 34,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        color: const Color.fromARGB(
-                                          255,
-                                          255,
-                                          225,
-                                          223,
+                                            ),
+                                            child: Icon(
+                                              isFavorite
+                                                  ? Icons.favorite
+                                                  : Icons
+                                                        .favorite_border_outlined,
+                                              color: Colors.red,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      child: Icon(
-                                        isFavorite
-                                            ? Icons.favorite
-                                            : Icons.favorite_border_outlined,
-                                        color: Colors.red,
+                                      Image.asset(
+                                        product['image'],
+                                        height: 150,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                Image.asset(product['image'], height: 150),
-                                Text(
-                                  product['name'],
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
+                                      Text(
+                                        product['name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.star, color: Colors.amber),
-                                    Text(product['rating'].toString()),
-                                    const SizedBox(width: 4),
-                                    Text('(${product['reviews']})'),
-                                  ],
-                                ),
-                                Text(
-                                  '\$${product['price'].toString()}',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          Text(product['rating'].toString()),
+                                          const SizedBox(width: 4),
+                                          Text('(${product['reviews']})'),
+                                        ],
+                                      ),
+                                      Text(
+                                        '\$${product['price'].toString()}',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 const SizedBox(height: 24),
                 Row(
