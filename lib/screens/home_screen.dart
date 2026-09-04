@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+  bool isSearching = false;
+  final searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,35 +116,47 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              Container(
-                height: 60,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 242, 241, 241),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.search,
-                        size: 32,
-                        color: Color.fromARGB(179, 89, 89, 89),
-                      ),
-                      const SizedBox(width: 16),
-                      const Text(
-                        'Find your burger',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(179, 89, 89, 89),
-                          wordSpacing: 4,
-                          letterSpacing: 2,
+              GestureDetector(
+                onTap: () => setState(() {
+                  isSearching = true;
+                }),
+                child: isSearching
+                    ? TextFormField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(),
+                        ),
+                      )
+                    : Container(
+                        height: 60,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 242, 241, 241),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.search,
+                                size: 32,
+                                color: Color.fromARGB(179, 89, 89, 89),
+                              ),
+                              const SizedBox(width: 16),
+                              const Text(
+                                'Find your burger',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color.fromARGB(179, 89, 89, 89),
+                                  wordSpacing: 4,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
               ),
               const SizedBox(height: 30),
               SizedBox(
